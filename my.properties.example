@@ -1,0 +1,14 @@
+#Charset of this file must be UTF-8 without BOM
+#Please copy this fine and rename to "my.properties"
+
+#Count of threads
+nThreads=4
+
+#Count of words in sentense
+wordCount=4
+
+#Preparable file
+file=c:\\Users\\Ник\\Downloads\\l.txt
+
+#encoding of preparable file
+file-encoding=cp1251

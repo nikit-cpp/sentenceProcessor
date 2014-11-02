@@ -17,19 +17,52 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Runner {
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
+public class Runner {
+	@Value("${nThreads}")
+	int nThreads;
+	
+	@Value("${wordCount}")
+	int wordCount;
+	
+	@Value("${file}")
+	String file;
+	
+	@Value("${file-encoding}")
+	String fileEncoding;
+	
+	/**
+	 * сам себе лаунчер :)
+	 * @param args
+	 */
 	public static void main(String args[]) {
-		final int nThreads = 1;
-		final int wordCount = 4;
 		
+		ApplicationContext context = new ClassPathXmlApplicationContext(
+				"SpringConfig.xml");
+ 
+		// Когда для автоматического поиска бины помечены как компоненты, в
+		// методе getBean в качестве имени выступает имя класса с маленькой
+		// буквы, по соглашению
+		Runner obj = (Runner) context.getBean("runner");
+		obj.run();
+		
+		((ConfigurableApplicationContext) context).close();
+	}
+	
+	void run(){
 		ExecutorService service = Executors.newFixedThreadPool(nThreads);
 
 		try {
 			org.joda.time.DateTime startTime = new org.joda.time.DateTime();
 
-			List<String> strings = /* FileUtils.readLines */readSentences(
-					new File("src/main/resources/lt1.txt"), "cp1251");
+			List<String> strings = readSentences(
+					new File(file), fileEncoding);
 
 
 
@@ -98,7 +131,6 @@ public class Runner {
 		}finally{
 			service.shutdown();
 		}
-
 	}
 
 	static String[] split1(String s) {
