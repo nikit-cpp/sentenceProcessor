@@ -52,7 +52,7 @@ public class Runner {
 		Runner obj = (Runner) context.getBean("runner");
 		obj.run();
 		
-		((ConfigurableApplicationContext) context).close();
+		((ClassPathXmlApplicationContext) context).close();
 	}
 	
 	void run(){
