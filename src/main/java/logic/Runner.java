@@ -43,8 +43,8 @@ public class Runner {
 	 */
 	public static void main(String args[]) throws IOException {
 		
-		ApplicationContext context = new ClassPathXmlApplicationContext(
-				"SpringConfig.xml");
+		ApplicationContext context= new ClassPathXmlApplicationContext(
+                "SpringConfig.xml");
 
         char c='y';
         do {
@@ -53,10 +53,11 @@ public class Runner {
             // буквы, по соглашению
             Runner obj = (Runner) context.getBean("runner");
             obj.run();
-            System.out.println("Press 'y' to reload properties and continue...");
+
+            System.out.println("Press 'q' to exit, or press any key to reload properties and continue...");
             c = Character.toLowerCase((char) System.in.read());
-            ((ConfigurableApplicationContext)context).refresh();
-        }while (c=='y');
+            ((ConfigurableApplicationContext) context).refresh();
+        }while (c!='n');
 		
 		((ClassPathXmlApplicationContext) context).close();
 	}
