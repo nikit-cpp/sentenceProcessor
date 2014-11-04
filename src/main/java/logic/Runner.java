@@ -1,10 +1,7 @@
 package logic;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -13,21 +10,30 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
+import javax.validation.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 @Component
 public class Runner {
+    @Min(1)
     @Value("${nThreads}")
     int nThreads;
 
+    @Min(0)
     @Value("${wordCount}")
     int wordCount;
 
+    @NotEmpty
     @Value("${file}")
     String file;
 
+    @NotEmpty
     @Value("${file-encoding}")
     String fileEncoding;
 
@@ -45,11 +51,13 @@ public class Runner {
      *
      * @param args
      */
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws Exception {
 
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
                 "SpringConfig.xml");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        Validator validator = factory.getValidator();
 
         String isExit = "";
         do {
@@ -57,6 +65,9 @@ public class Runner {
             // методе getBean в качестве имени выступает имя класса с маленькой
             // буквы, по соглашению
             Runner obj = (Runner) context.getBean("runner");
+
+            validate(obj, validator);
+
             obj.run();
 
             System.out.println("Enter \"" + exit + "\" to exit, or enter any other to reload properties and re-process file...");
@@ -67,6 +78,7 @@ public class Runner {
 
         bufferedReader.close();
         context.close();
+        factory.close();
     }
 
     void init() {
@@ -194,6 +206,21 @@ public class Runner {
     }
 
     void destroy() {
+    }
+
+    // http://habrahabr.ru/post/68318/
+    public static void validate(Object object, Validator validator) throws ValidationException {
+        Set<ConstraintViolation<Object>> constraintViolations = validator
+                .validate(object);
+        if(constraintViolations.size()!=0){
+            System.err.println("Validation erors:");
+            for (ConstraintViolation<Object> cv : constraintViolations)
+                System.err.println(String.format(
+                        "property: [%s], value: [%s], message: [%s]",
+                        cv.getPropertyPath(), cv.getInvalidValue(), cv.getMessage()));
+
+            throw new ValidationException();
+        }
     }
 }
 
