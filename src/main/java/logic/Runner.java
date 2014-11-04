@@ -31,6 +31,13 @@ public class Runner {
     @Value("${file-encoding}")
     String fileEncoding;
 
+    @Value("${artifactId}")
+    String artifactId;
+
+    @Value("${version}")
+    String version;
+
+
     static String exit = "q";
 
     /**
@@ -124,7 +131,7 @@ public class Runner {
 
             org.joda.time.DateTime endTime = new org.joda.time.DateTime();
 
-            System.out.println("\n" + getProgramVersion());
+            System.out.println("\n" + artifactId + " " + version);
 
             System.out.println("printed sentences with: " + wordCount
                     + " words");
@@ -187,21 +194,6 @@ public class Runner {
     }
 
     void destroy() {
-    }
-
-    public String getProgramVersion() {
-        String path = "/version.properties";
-        InputStream stream = getClass().getResourceAsStream(path);
-        if (stream == null) return "UNKNOWN";
-        Properties props = new Properties();
-        try {
-            props.load(stream);
-            stream.close();
-            String ret = props.get("artifactId") + " " + props.get("version");
-            return ret;
-        } catch (IOException e) {
-            return "UNKNOWN";
-        }
     }
 }
 

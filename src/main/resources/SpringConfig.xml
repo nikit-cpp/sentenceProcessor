@@ -7,5 +7,6 @@
     default-destroy-method="destroy">
 	<context:component-scan base-package="logic" />
 
-	<context:property-placeholder location="file:my.properties" file-encoding="UTF-8" />
+    <context:property-placeholder location="file:my.properties" file-encoding="UTF-8" order="1" ignore-unresolvable="true" />
+    <context:property-placeholder location="classpath:version.properties" file-encoding="UTF-8"  order="2" ignore-unresolvable="true"/>
 </beans>
