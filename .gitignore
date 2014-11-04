@@ -5,6 +5,6 @@ target
 .metadata
 .classpath
 .project
-my.properties
 .idea
 *.iml
+my.properties
