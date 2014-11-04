@@ -15,11 +15,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
-        </dependency>
-        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>2.5</version>
@@ -28,6 +23,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
+            <scope>test</scope>
         </dependency>
 
         <!-- Spring dependencies -->
@@ -41,7 +37,7 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!-- для того чтобы спринг видел конфиги log4j эта зависимость доолжна присутствовать -->
+        <!-- для того чтобы спринг видел конфиги log4j эта зависимость должна присутствовать -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
