@@ -41,16 +41,22 @@ public class Runner {
 	 * сам себе лаунчер :)
 	 * @param args
 	 */
-	public static void main(String args[]) {
+	public static void main(String args[]) throws IOException {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"SpringConfig.xml");
- 
-		// Когда для автоматического поиска бины помечены как компоненты, в
-		// методе getBean в качестве имени выступает имя класса с маленькой
-		// буквы, по соглашению
-		Runner obj = (Runner) context.getBean("runner");
-		obj.run();
+
+        char c='y';
+        do {
+            // Когда для автоматического поиска бины помечены как компоненты, в
+            // методе getBean в качестве имени выступает имя класса с маленькой
+            // буквы, по соглашению
+            Runner obj = (Runner) context.getBean("runner");
+            obj.run();
+            System.out.println("Press 'y' to reload properties and continue...");
+            c = Character.toLowerCase((char) System.in.read());
+            ((ConfigurableApplicationContext)context).refresh();
+        }while (c=='y');
 		
 		((ClassPathXmlApplicationContext) context).close();
 	}
