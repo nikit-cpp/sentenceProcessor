@@ -36,6 +36,8 @@ public class Runner {
 	
 	@Value("${file-encoding}")
 	String fileEncoding;
+
+    static String exit="q";
 	
 	/**
 	 * сам себе лаунчер :)
@@ -46,7 +48,7 @@ public class Runner {
 		ApplicationContext context= new ClassPathXmlApplicationContext(
                 "SpringConfig.xml");
 
-        char c='y';
+        String isExit="";
         do {
             // Когда для автоматического поиска бины помечены как компоненты, в
             // методе getBean в качестве имени выступает имя класса с маленькой
@@ -54,10 +56,12 @@ public class Runner {
             Runner obj = (Runner) context.getBean("runner");
             obj.run();
 
-            System.out.println("Press 'q' to exit, or press any key to reload properties and continue...");
-            c = Character.toLowerCase((char) System.in.read());
+            System.out.println("Enter \"" + exit +"\" to exit, or enter any other to reload properties and re-process file...");
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            isExit = bufferedReader.readLine();
             ((ConfigurableApplicationContext) context).refresh();
-        }while (c!='n');
+        }while (!isExit.equals(exit));
 		
 		((ClassPathXmlApplicationContext) context).close();
 	}
