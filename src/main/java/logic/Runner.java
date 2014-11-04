@@ -44,8 +44,8 @@ public class Runner {
 	 * @param args
 	 */
 	public static void main(String args[]) throws IOException {
-		
-		ApplicationContext context= new ClassPathXmlApplicationContext(
+
+        ClassPathXmlApplicationContext context= new ClassPathXmlApplicationContext(
                 "SpringConfig.xml");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -60,11 +60,11 @@ public class Runner {
             System.out.println("Enter \"" + exit +"\" to exit, or enter any other to reload properties and re-process file...");
 
             isExit = bufferedReader.readLine();
-            ((ConfigurableApplicationContext) context).refresh();
+            context.refresh();
         }while (!isExit.equals(exit));
 
         bufferedReader.close();
-		((ClassPathXmlApplicationContext) context).close();
+		context.close();
 	}
 	
 	void run(){
