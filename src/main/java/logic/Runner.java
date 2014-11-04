@@ -47,6 +47,7 @@ public class Runner {
 		
 		ApplicationContext context= new ClassPathXmlApplicationContext(
                 "SpringConfig.xml");
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         String isExit="";
         do {
@@ -58,11 +59,11 @@ public class Runner {
 
             System.out.println("Enter \"" + exit +"\" to exit, or enter any other to reload properties and re-process file...");
 
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
             isExit = bufferedReader.readLine();
             ((ConfigurableApplicationContext) context).refresh();
         }while (!isExit.equals(exit));
-		
+
+        bufferedReader.close();
 		((ClassPathXmlApplicationContext) context).close();
 	}
 	
