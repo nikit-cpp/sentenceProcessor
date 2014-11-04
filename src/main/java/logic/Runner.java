@@ -133,11 +133,7 @@ public class Runner {
 		}
 	}
 
-	static String[] split1(String s) {
-		return s.split("[\\, :\\[\\]\\(\\)]");
-	}
-
-	public static String ruRegex = "[а-яА-Я]+";
+	public static String ruRegex = "[а-яА-Яa-zA-Z]+";
 
 	static List<String> split2(String s) {
 		Pattern p = Pattern.compile(ruRegex);

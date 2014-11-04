@@ -11,6 +11,7 @@ import org.junit.Test;
 
 public class SplitTest {
 	public static String hi = "Привет, как дела?";
+    public static String h2ruen = "Hi, как дела*";
 	@Test
 	public void testRegex(){
 		Pattern p = Pattern.compile(Runner.ruRegex);
@@ -50,5 +51,21 @@ public class SplitTest {
 		assertEquals("как", a.get(1));
 		assertEquals("дела", a.get(2));
 	}
+
+    @Test
+    public void testSplitRuEn() {
+        List<String> a = Runner.split2(h2ruen);
+
+        System.out.println("out array size: "+ a.size());
+
+        for(String s: a)
+            System.out.println(s);
+
+        assertEquals(3, a.size());
+
+        assertEquals("Hi", a.get(0));
+        assertEquals("как", a.get(1));
+        assertEquals("дела", a.get(2));
+    }
 
 }
