@@ -66,6 +66,9 @@ public class Runner {
         bufferedReader.close();
 		context.close();
 	}
+
+    void init(){
+    }
 	
 	void run(){
 		ExecutorService service = Executors.newFixedThreadPool(nThreads);
@@ -186,6 +189,9 @@ public class Runner {
 		br.close();
 		return list;
 	}
+
+    void destroy(){
+    }
 }
 
 class ResultContainer implements Comparable<ResultContainer> {
