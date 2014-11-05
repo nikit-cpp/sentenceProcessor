@@ -14,14 +14,14 @@ public class SplitTest {
     public static String h2ruen = "Hi, как дела*";
 	@Test
 	public void testRegex(){
-		Pattern p = Pattern.compile(Runner.ruRegex);
+		Pattern p = Pattern.compile(TextProcessor.ruRegex);
 		Matcher m = p.matcher(hi);
 		assertEquals(true, m.find());
 	}
 	
 	@Test
 	public void testRegexGroups(){
-		Pattern p = Pattern.compile(Runner.ruRegex);
+		Pattern p = Pattern.compile(TextProcessor.ruRegex);
 		Matcher m = p.matcher(hi);
 		
 		assertEquals(true, m.find());
@@ -38,7 +38,7 @@ public class SplitTest {
 	// @Ignore
 	@Test
 	public void testSplit() {
-		List<String> a = Runner.split2(hi);
+		List<String> a = TextProcessor.split2(hi);
 		
 		System.out.println("out array size: "+ a.size());
 		
@@ -54,7 +54,7 @@ public class SplitTest {
 
     @Test
     public void testSplitRuEn() {
-        List<String> a = Runner.split2(h2ruen);
+        List<String> a = TextProcessor.split2(h2ruen);
 
         System.out.println("out array size: "+ a.size());
 
