@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.validation.*;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 
 @Component
 public class TextProcessor {
@@ -27,11 +26,11 @@ public class TextProcessor {
     int wordCount;
 
     @NotEmpty
-    @Value("${file}")
-    String file;
+    @Value("${fileName}")
+    String fileName;
 
     @NotEmpty
-    @Value("${file-encoding}")
+    @Value("${fileName-encoding}")
     String fileEncoding;
 
     @Value("${artifactId}")
@@ -44,17 +43,60 @@ public class TextProcessor {
     static String exit = "q";
 
     void init() {
+
     }
 
-    void run() {
+    void run(){
+        File path = new File(fileName);
+        org.joda.time.DateTime startTime = new org.joda.time.DateTime();
+
+        if (path.isDirectory()){
+            File[] files = path.listFiles();
+            System.out.println("Число файлов " + files.length);
+            ExecutorService service = Executors.newFixedThreadPool(nThreads);
+            List<Callable<Object>> processFileTasks = new ArrayList<Callable<Object>>();
+            for(final File file: files){
+
+
+                processFileTasks.add(new Callable<Object>() {
+                    public Object call() throws Exception {
+                        System.out.println("Обрабатываю " + file);
+                        processFile(file);
+                        return new Object();
+                    }
+                });
+            }
+            try {
+                List<Future<Object>> futures = service
+                        .invokeAll(processFileTasks);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                service.shutdown();
+            }
+        }else{
+            processFile(path);
+        }
+        org.joda.time.DateTime endTime = new org.joda.time.DateTime();
+
+        System.out.println("\n" + artifactId + " " + version);
+
+        System.out.println("printed sentences with: " + wordCount
+                + " words");
+        System.out.println("threads: " + nThreads);
+        System.out.println("wasted time: "
+                + (endTime.getMillis() - startTime.getMillis()));
+    }
+
+    /**
+     * Обрабатывает 1 файл
+     * @param oneFile
+     */
+    void processFile(File oneFile) {
         ExecutorService service = Executors.newFixedThreadPool(nThreads);
 
         try {
-            org.joda.time.DateTime startTime = new org.joda.time.DateTime();
-
-            List<String> strings = readSentences(
-                    new File(file), fileEncoding);
-
+            List<String> strings = readSentences(oneFile, fileEncoding);
 
             // Разделяем предложения на слова
             List<Callable<ResultContainer>> wordSplitTasks = new ArrayList<Callable<ResultContainer>>();
@@ -102,18 +144,6 @@ public class TextProcessor {
                 if (rc.s != null)
                     System.out.println(rc.s);
             }
-
-            org.joda.time.DateTime endTime = new org.joda.time.DateTime();
-
-            System.out.println("\n" + artifactId + " " + version);
-
-            System.out.println("printed sentences with: " + wordCount
-                    + " words");
-            System.out.println("threads: " + nThreads);
-            System.out.println("wasted time: "
-                    + (endTime.getMillis() - startTime.getMillis()));
-            //
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

@@ -33,7 +33,7 @@ public class Runner {
 
             obj.run();
 
-            System.out.println("Enter \"" + exit + "\" to exit, or enter any other to reload properties and re-process file...");
+            System.out.println("Enter \"" + exit + "\" to exit, or enter any other to reload properties and re-process fileName...");
 
             isExit = bufferedReader.readLine();
             context.refresh();
