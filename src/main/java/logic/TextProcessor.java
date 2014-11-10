@@ -10,6 +10,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.validation.*;
@@ -33,12 +34,8 @@ public class TextProcessor {
     @Value("${fileName-encoding}")
     String fileEncoding;
 
-    @Value("${artifactId}")
-    String artifactId;
-
-    @Value("${version}")
-    String version;
-
+    @Autowired
+    Version version;
 
     static String exit = "q";
 
@@ -79,8 +76,9 @@ public class TextProcessor {
         }
         org.joda.time.DateTime endTime = new org.joda.time.DateTime();
 
-        System.out.println("\n" + artifactId + " " + version);
-
+        System.out.println("=======================");
+        System.out.println(version.getArtifactId() + " " + version.getVersion());
+        System.out.println("=======================");
         System.out.println("printed sentences with: " + wordCount
                 + " words");
         System.out.println("threads: " + nThreads);
