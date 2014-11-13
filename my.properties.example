@@ -8,7 +8,7 @@ nThreads=4
 wordCount=4
 
 #Preparable file
-file=c:\\Users\\Ник\\Downloads\\l.txt
+fileName=c:\\Users\\Ник\\Downloads\\l.txt
 
 #encoding of preparable file
-file-encoding=cp1251
+fileName-encoding=cp1251
