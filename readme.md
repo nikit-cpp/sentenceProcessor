@@ -1,4 +1,4 @@
-Winwows launch example
+Windows launch example
 ======================
 from project dir
 ----------------
