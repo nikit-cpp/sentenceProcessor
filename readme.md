@@ -1,7 +1,7 @@
 Winwows launch example
 ======================
-from `target` dir
------------------
+from project dir
+----------------
 `java -Dfile.encoding=Cp866 -jar target/sentenceProcessor.jar`
 
 or if you put .jar and .properties in same directory
