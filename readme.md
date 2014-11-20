@@ -4,6 +4,7 @@
 
 Building
 ========
+Проект собирается на jdk7+  
 From project's folder `sentenceProcessor`:  
 `mvn package`
 
