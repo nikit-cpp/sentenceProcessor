@@ -7,7 +7,7 @@ nThreads=4
 #Count of words in sentense
 wordCount=4
 
-#Preparable file
+#Preparable file or directory
 fileName=c:\\Users\\Ник\\Downloads\\l.txt
 
 #encoding of preparable file
