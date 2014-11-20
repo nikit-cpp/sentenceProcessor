@@ -9,10 +9,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import javax.validation.*;
 import javax.validation.constraints.Min;
 
@@ -51,21 +53,18 @@ public class TextProcessor {
             File[] files = path.listFiles();
             System.out.println("Число файлов " + files.length);
             ExecutorService service = Executors.newFixedThreadPool(nThreads);
-            List<Callable<Object>> processFileTasks = new ArrayList<Callable<Object>>();
+            List<Callable<Void>> processFileTasks = new ArrayList<Callable<Void>>();
             for(final File file: files){
-
-
-                processFileTasks.add(new Callable<Object>() {
-                    public Object call() throws Exception {
+                processFileTasks.add(new Callable<Void>() {
+                    public Void call() throws Exception {
                         System.out.println("Обрабатываю " + file);
                         processFile(file);
-                        return new Object();
+                        return null;
                     }
                 });
             }
             try {
-                List<Future<Object>> futures = service
-                        .invokeAll(processFileTasks);
+                service.invokeAll(processFileTasks);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } finally {
